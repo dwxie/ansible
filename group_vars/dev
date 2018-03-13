@@ -1,0 +1,23 @@
+---
+jar_user: test
+jar_base_home: '/usr/local/LD-SaaS'
+jar_src: /usr/share/tomcat/.jenkins/workspace/LD-SaaS-build-dev-pipeline/artifacts/{{ jar_name }}.tar.gz
+jar_purge_dir: true
+
+tomcat_user: test
+tomcat_base_dir: /usr/local/LD-SaaS
+tomcat_war_src: /usr/share/tomcat/.jenkins/workspace/LD-SaaS-build-dev-pipeline/artifacts/{{ tomcat_war_name }}.war
+
+nginx_upstreams:
+  - name: tomcat_api
+    servers: {
+      "192.168.100.16:8080",
+      }
+  - name: tomcat_gateway
+    servers: {
+      "192.168.100.16:8081",
+      }
+  - name: socket_io
+    servers: {
+      "192.168.100.16:9093",
+      }

@@ -1,0 +1,76 @@
+---
+
+- hosts: web
+  tags: web
+  roles:
+    - role: nginx
+      nginx_vhosts_filename: "cyqz.conf"
+      nginx_log_format: |
+        '$remote_addr - $remote_user [$time_local] "$request" '
+        '$status $body_bytes_sent "$http_referer" '
+        '"$http_user_agent" "$http_x_forwarded_for" "$request_time"'
+      nginx_vhosts:
+        - listen: "1080"
+          server_name: "localhost"
+          root: "/opt/cyqz/build"
+          index: "index.php index.html index.htm"
+          error_page: "404 = /404.html"
+          extra_parameters: |
+            try_files	$uri /index.html;
+            charset	utf-8;
+
+            location ^~ /case/ {
+                root	/opt/cyqz/media/;
+            }
+
+            location ^~ /sign/ {
+                alias	/opt/cyqz/app/;
+                index	index.php index.html index.htm;
+            }
+
+            location ^~ /api/ {
+                proxy_pass	http://tomcat_api;
+                proxy_redirect	default;
+                proxy_cookie_path	/api/ /;
+                proxy_set_header	Host	$host:$server_port;
+                proxy_set_header	X-Real-IP	$remote_addr;
+                proxy_set_header	X-Forwarded-Host	$host:$server_port;
+                proxy_set_header	X-Forwarded-Server	$host:$server_port;
+                proxy_set_header	X-Forwarded-For	$proxy_add_x_forwarded_for;
+            }
+  post_tasks:
+    - name: 创建BS端部署目录
+      file:
+        path: /opt/cyqz/build
+        mode: 0755
+        state: directory
+        owner: test
+        group: test
+      tags: bs
+    - name: 部署BS端静态文件
+      unarchive:
+        dest: /opt/cyqz/build
+        src: /usr/share/tomcat/.jenkins/workspace/cyqz_web_pipeline/build.tar.gz
+        owner: test
+        group: test
+      tags: bs
+    - name: 创建app端部署目录
+      file:
+        path: /opt/cyqz/app
+        mode: 0755
+        state: directory
+        owner: test
+        group: test
+      tags: app
+    - name: 部署app端静态文件
+      unarchive:
+        dest: /opt/cyqz/app
+        src: /usr/share/tomcat/.jenkins/workspace/cyqz_web_app_pipeline/dist.tar.gz
+        owner: test
+        group: test
+      tags: app
+    - name: 创建静态文件目录
+      file:
+        path: /opt/cyqz/media
+        mode: 0777
+        state: directory

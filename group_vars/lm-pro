@@ -1,0 +1,6 @@
+---
+jar_user: netposa
+jar_base_home: /opt/netposa
+jar_src: /usr/share/tomcat/.jenkins/workspace/lingmou/{{ jar_name }}.zip
+jar_init_script: init.jar.j2
+jar_java_opts: "-Xms2048m -Xmx2048m -XX:PermSize=512M -XX:MaxNewSize=512m -XX:MaxPermSize=1024m"

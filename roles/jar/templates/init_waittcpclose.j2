@@ -1,0 +1,108 @@
+#!/bin/sh
+#
+# This service init script takes care of starting and stopping jar programs
+#
+# chkconfig: - 80 20
+#
+# Version: v0.1.5
+#
+# Authors: [xuchang](mailto:marsxuc@qq.com)
+### BEGIN INIT INFO
+# Provides:          {{ jar_name }}
+# Required-Start:    $local_fs $network
+# Required-Stop:     $local_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: {{ jar_name }} service
+# Description:       {{ jar_name }} service daemon
+### END INIT INFO
+#set -x
+
+USER_RUN={{ jar_user }}
+PRO_NAME={{ jar_name }}
+MAIN_CLASS={{ jar_main_class }}
+HOME_DIR={{ jar_project_home }}
+JAVA_OPTS="{{ jar_java_opts }}"
+NOHUP_LOG={{ jar_project_home }}/logs/stdout.log
+CONF_DIR={{ jar_project_home }}/conf
+LIB_DIR={{ jar_project_home }}/lib
+LIB_JARS=`ls $LIB_DIR|grep .jar|awk '{print "'$LIB_DIR'/"$0}'|tr "\n" ":"`
+
+JAVA_HOME=/etc/alternatives/jre
+PATH=$JAVA_HOME/bin:$PATH
+export PATH
+
+temp=.:$CLASSPATH
+append(){
+     temp=$temp":"$1
+}
+for i in $HOME_DIR/lib/* ; do
+  append $i
+done
+export CLASSPATH=$temp:$HOME_DIR/config
+
+pro_pid() {
+  echo `ps -ef | grep java | grep $HOME_DIR | grep -v grep | awk '{print $2}'`
+}
+
+start() {
+  pid=$(pro_pid)
+  if [ -n "$pid" ];then
+    echo "$PRO_NAME is already running (pid: $pid)"
+  else
+    echo "Starting $PRO_NAME"
+    /bin/su -p $USER_RUN -c "cd $HOME_DIR; nohup java $JAVA_OPTS -classpath $CONF_DIR:$LIB_JARS $MAIN_CLASS > $NOHUP_LOG 2>&1 &"
+  fi
+
+  return 0
+}
+
+stop() {
+  pid=$(pro_pid)
+  if [ -n "$pid" ];then
+    echo "Stoping $PRO_NAME"
+	kill -9 $pid
+
+    echo "Waiting tcp connection close";
+    until [ ! `netstat -antp|grep :9093` ]
+    do
+      sleep 1
+      echo -n '.'
+    done
+    echo
+  else
+    echo "$PRO_NAME is not running"
+  fi
+
+  return 0
+}
+
+case $1 in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart)
+    stop
+    sleep 3
+    start
+    ;;
+  status)
+    pid=$(pro_pid)
+    if [ -n "$pid" ];then
+      echo "$PRO_NAME is runnint with pid: $pid"
+      exit 0
+    else
+      echo "$PRO_NAME is not running"
+      exit 3
+    fi
+    ;;
+  *)
+    echo $"Usage: $0 {start|stop|restart|status}"
+    exit 3
+    ;;
+esac
+
+exit $?

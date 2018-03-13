@@ -1,0 +1,3 @@
+---
+# vars file for jar
+#jar_name: "{{ jar_src | basename | splitext | first }}"

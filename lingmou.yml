@@ -1,0 +1,92 @@
+---
+- hosts: accessHK 
+  roles:
+    - role: jar
+      jar_name: "accessHK"
+      jar_main_class: "accessHk-1.0.0.jar"
+  tags: accessHK
+
+- hosts: vdt
+  roles:
+    - role: jar
+      jar_name: "vdt"
+      jar_main_class: "vdt-app-1.0.0.jar"
+  tags: vdt
+
+- hosts: pva
+  roles:
+    - role: jar
+      jar_name: "pva"
+      jar_main_class: "pva-lite-server-0.0.1-SNAPSHOT.jar"
+# todo: 添加cp动态库的task
+  tags: pva
+
+- hosts: accessLY
+  roles:
+    - role: jar
+      jar_name: "accessLY"
+      jar_main_class: "accessLY-1.0.0.jar"
+  tags: accessLY
+
+- hosts: vdt-access
+  roles:
+    - role: jar
+      jar_name: "vdt-access"
+      jar_main_class: "vdt-access-1.0.0.jar"
+  tags: vdt-access
+
+- hosts: pull-task
+  roles:
+    - role: jar
+      jar_name: "pulltask"
+      jar_main_class: "pull-task-0.0.1-SNAPSHOT.jar"
+  tags: pull-task
+
+- hosts: trackingface
+  roles:
+    - role: jar
+      jar_main_class: "gotrackingface"
+      jar_name: "trackingface"
+      jar_init_script: init.j3
+      jar_src: /usr/share/tomcat/.jenkins/workspace/TrackingFace/trackingface.zip
+      jar_base_home: /opt/zhyy
+  tags: trackingface
+
+
+- hosts: vdt-frontend
+  tasks:
+    - name: 创建BS端部署目录
+      file:
+        path: /opt/zhyy/www/vdt_frontend
+        mode: 0755
+        state: directory
+        owner: "{{ jar_user }}"
+        group: "{{ jar_user }}"
+    - name: 部署BS端静态文件
+      unarchive:
+        dest: /opt/zhyy/www/vdt_frontend
+#        src: /usr/share/tomcat/.jenkins/workspace/vdt_frontend/build.tar.gz
+        src: "{{ vdt_frontend_source }}"
+        mode: 0755
+        owner: "{{ jar_user }}"
+        group: "{{ jar_user }}"
+  tags: vdt-frontend
+
+- hosts: pva-frontend
+  tasks:
+    - name: 创建BS端部署目录
+      file:
+        path: /opt/zhyy/www/pva_frontend
+        mode: 0755
+        state: directory
+        owner: "{{ jar_user }}"
+        group: "{{ jar_user }}"
+    - name: 部署BS端静态文件
+      unarchive:
+        dest: /opt/zhyy/www/pva_frontend
+        src: /usr/share/tomcat/.jenkins/workspace/pva_frontend/pva_frontend.zip
+#        src: "{{ pva_frontend_source }}"
+        mode: 0755
+        owner: "{{ jar_user }}"
+        group: "{{ jar_user }}"
+  tags: pva-frontend

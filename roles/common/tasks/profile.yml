@@ -1,0 +1,12 @@
+---
+- name: set idle timeout
+  lineinfile:
+    dest: /etc/profile
+    line: TMOUT={{ idle_tmout }}
+    regexp: ^TMOUT
+
+- name: set history file format
+  lineinfile:
+    dest: /etc/profile
+    line: HISTTIMEFORMAT={{ history_format }}
+    regexp: ^HISTTIMEFORMAT

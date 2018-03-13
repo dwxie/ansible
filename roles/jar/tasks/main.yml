@@ -1,0 +1,117 @@
+---
+#- name: Ensure parameters defined
+
+#- debug: var=jar_project_home
+
+- name: 确认参数
+  fail:
+    msg: "you must define parameters $jar_name, $jar_src and $jar_main_class"
+  when: jar_src == None or jar_main_class == None or jar_name == None
+
+- name: Define {{ jar_name }} user
+  user:
+    name: "{{ jar_user }}"
+  become: true
+
+- name: Ensure install directory exist
+  file:
+    path:  "{{ jar_base_home }}"
+    state: directory
+    mode: 0755
+    owner: "{{ jar_user }}"
+    group: "{{ jar_user }}"
+  become: true
+
+#- name: Transfer compressed {{ jar_name }} file
+#  copy:
+#    dest: "{{ jar_base_home }}"
+#    src: "{{ jar_src }}"
+#    owner: "{{ jar_user }}"
+#    group: "{{ jar_user }}"
+#  register: result
+
+#- name: Determine directories to delete
+#  shell: "tar -tf {{ jar_name }}.tar.gz | awk -F/ {'print $2'} | uniq | grep ."
+#  args:
+#    chdir: "{{ jar_base_home }}"
+#    executable: /bin/bash
+#  register: dir
+#  when: result|changed
+
+#- debug: var=dir.stdout_lines
+
+#- name: Clear up install directory
+#  file:
+#    path: "{{ jar_project_home }}/{{ item }}"
+#    state: absent
+#  with_items: dir.stdout_lines
+#  when: result|changed
+
+- name: Clear up install directory
+  file:
+    path: "{{ jar_project_home }}"
+    state: absent
+  when: jar_purge_dir
+
+#- name: Extract {{ jar_name }} files
+#  shell: tar -zxf {{ jar_name }}.tar.gz
+#  args:
+#    chdir: "{{ jar_base_home }}"
+#    executable: /bin/bash
+#  when: result|changed
+
+- name: Deploy {{ jar_name }}
+  unarchive:
+    dest: "{{ jar_base_home }}"
+    src: "{{ jar_src }}"
+    remote_src: "{{ jar_remote_src }}"
+    owner: "{{ jar_user }}"
+    group: "{{ jar_user }}"
+  become: true
+  notify: Restart service
+
+
+#- name: Ensure {{ jar_user }}'s project file's owner
+#  file:
+#    path: "{{ jar_project_home }}"
+#    owner: "{{ jar_user }}"
+#    group: "{{ jar_user }}"
+#    recurse: yes
+
+- name: Ensure log directory exist
+  file:
+    path: /var/log/{{ jar_name }}
+    state: directory
+    mode: 0755
+    owner: "{{ jar_user }}"
+    group: "{{ jar_user }}"
+    recurse: yes
+  become: true
+
+- name: Link log with log directory
+  file:
+    dest: "{{ jar_project_home }}/logs"
+    src: /var/log/{{ jar_name }}
+    state: link
+    force: yes
+    owner: "{{ jar_user }}"
+    group: "{{ jar_user }}"
+  become: true
+
+- name: Ensure init file exist
+  template:
+    dest: /etc/init.d/{{ jar_name }}
+    src: "{{ jar_init_script }}"
+    mode: 0755
+    owner: root
+    group: root
+  become: true
+  notify:
+    - Restart service
+
+- name: Ensure {{ jar_name }} started
+  service:
+    name: "{{ jar_name }}"
+    state: started
+    enabled: yes
+  become: true

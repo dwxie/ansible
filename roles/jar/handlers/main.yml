@@ -1,0 +1,5 @@
+---
+# handlers file for jar
+
+- name: Restart service
+  service: name={{ jar_name }} state=restarted

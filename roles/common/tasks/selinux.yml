@@ -1,0 +1,12 @@
+---
+- name: Install SELinux tools
+  package:
+    name:
+      - libselinux-utils
+      - libselinux-python
+      - policycoreutils-python
+    state: present
+
+- name: Set SELinux policy and state
+  selinux: policy={{ selinux_policy }} state={{ selinux_state }}
+  tags: selinux

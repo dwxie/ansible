@@ -1,0 +1,17 @@
+---
+jar_user: test
+jar_base_home: '/opt/ldsaas'
+jar_src: /home/xuchang/{{ jar_name }}.tar.gz
+
+tomcat_user: test
+tomcat_base_dir: /opt/ldsaas
+tomcat_war_src: /home/xuchang/{{ tomcat_war_name }}.war
+tomcat_purge: no
+
+#nginx_upstreams:
+#  - name: tomcat_api
+#    servers: {
+#      "192.168.100.4:8080",
+#      "192.168.100.17:8080",
+#      "192.168.100.18:8080",
+#    }

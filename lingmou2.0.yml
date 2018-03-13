@@ -1,0 +1,42 @@
+---
+- hosts: apiServer
+  roles:
+    - role: jar
+      jar_name: "apiServer"
+      jar_main_class: "lingmou-api-server-0.0.1-SNAPSHOT.jar"
+  tags: apiServer
+
+- hosts: bigdataServer
+  roles:
+    - role: jar
+      jar_name: "bigdataServer"
+      jar_main_class: "lingmou-bigdata-server-0.0.1-SNAPSHOT.jar"
+  tags: bigdataServer
+
+- hosts: deviceServer
+  roles:
+    - role: jar
+      jar_name: "deviceServer"
+      jar_main_class: "lingmou-device-server-0.0.1-SNAPSHOT.jar"
+  tags: deviceServer
+
+- hosts: logServer
+  roles:
+    - role: jar
+      jar_name: "logServer"
+      jar_main_class: "lingmou-log-server-0.0.1-SNAPSHOT.jar"
+  tags: logServer
+
+- hosts: messageServer
+  roles:
+    - role: jar
+      jar_name: "messageServer"
+      jar_main_class: "lingmou-message-server-0.0.1-SNAPSHOT.jar"
+  tags: messageServer
+
+- hosts: userServer
+  roles:
+    - role: jar
+      jar_name: "userServer"
+      jar_main_class: "lingmou-user-server-0.0.1-SNAPSHOT.jar"
+  tags: userServer

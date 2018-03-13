@@ -1,0 +1,72 @@
+---
+- hosts: chairDispacher
+  roles:
+    - role: jar
+      jar_name: "chairDispacher"
+      jar_main_class: "com.lingdanet.saas.deamon.chairDispacher.container.ChairDispacherContainer"
+  tags: chairDispacher
+
+- hosts: gatewayServer
+  roles:
+    - role: jar
+      jar_name: "gatewayServer"
+      jar_main_class: "com.lingdanet.saas.deamon.gatewayserver.container.GateWayServerContainer"
+  tags: gatewayServer
+
+- hosts: messagePushapi
+  roles:
+    - role: jar
+      jar_name: "messagePushapi"
+      jar_main_class: "com.lingdanet.saas.message.jpush.container.WebSocketContainer"
+  tags: messagePushapi
+
+- hosts: messageServer
+  vars:
+    jar_init_script: init_waittcpclose.j2
+  roles:
+    - role: jar
+      jar_name: "messageServer"
+      jar_main_class: "com.lingdanet.saas.netty.websocket.container.WebSocketContainer"
+  tags: messageServer
+
+- hosts: messageSms
+  roles:
+    - role: jar
+      jar_name: "messageSms"
+      jar_main_class: "com.lingdanet.saas.sms.container.SmsContainer"
+  tags: messageSms
+
+- hosts: eventScan
+  roles:
+    - role: jar
+      jar_name: "eventScan"
+      jar_main_class: "com.lingdanet.saas.deamo.container.EventScanContainer"
+  tags: eventScan
+
+- hosts: opLog
+  roles:
+    - role: jar
+      jar_name: "opLog"
+      jar_main_class: "com.lingdanet.saas.deamon.opLog.container.OpLogContainer"
+  tags: opLog
+
+- hosts: api
+  roles:
+    - role: tomcat
+      tomcat_war_name: api
+      tomcat_java_opts: "-server -Xms256m -Xmx1024m -XX:PermSize=256M -XX:MaxNewSize=256m -XX:MaxPermSize=512m -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=9000 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false"
+  tags: api
+
+- hosts: gateway
+  roles:
+    - role: tomcat
+      tomcat_war_name: gateway
+      tomcat_http_port: 8081
+  tags: gateway
+
+- hosts: scheduler
+  roles:
+    - role: tomcat
+      tomcat_war_name: scheduler
+      tomcat_http_port: 8082
+  tags: scheduler

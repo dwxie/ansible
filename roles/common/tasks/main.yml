@@ -1,0 +1,10 @@
+---
+# tasks file for common
+# configure selinux
+- include: selinux.yml
+
+# configure global profile
+- include: profile.yml
+
+# configure user
+- include: user.yml

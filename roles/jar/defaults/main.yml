@@ -1,0 +1,15 @@
+---
+# defaults file for jar
+jar_name: ~
+jar_src: ~
+jar_main_class: ~
+
+jar_remote_src: False
+jar_purge_dir: False
+
+jar_user: "{{ jar_name }}"
+jar_user_home: /home/{{ jar_user }}
+jar_base_home: "{{ jar_user_home }}"
+jar_project_home: "{{ jar_base_home }}/{{ jar_name }}"
+jar_java_opts: "-server -Xms256m -Xmx1024m -XX:PermSize=256M -XX:MaxNewSize=256m -XX:MaxPermSize=512m"
+jar_init_script: init.j2

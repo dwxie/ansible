@@ -1,0 +1,74 @@
+dev  ansible_ssh_host=192.168.100.31         ansible_ssh_user=root   ansible_ssh_pass=lingdasa
+test ansible_ssh_host=lm-test02.lingda.com   ansible_ssh_user=root   ansible_ssh_pass=lingdasa
+nc-lm-09-07-fnd1    ansible_ssh_host=218.95.36.58
+nc-lm-08-02-fnd2    ansible_ssh_host=218.95.36.57
+nc-lm-08-02-fnd3    ansible_ssh_host=218.95.36.56
+nc-lm-08-05-stofnd1 ansible_ssh_host=117.21.249.3
+nc-lm-08-05-mq1     ansible_ssh_host=117.21.249.6
+
+
+[accessHK]
+dev
+est
+nc-lm-08-05-stofnd1
+
+[accessLY]
+dev
+test
+nc-lm-09-07-fnd1
+
+[iod]
+dev
+test
+
+[pva]
+dev
+test
+nc-lm-08-02-fnd2
+
+[vdt]
+dev
+test
+nc-lm-09-07-fnd1
+
+[vdt-access]
+dev
+test
+nc-lm-08-02-fnd2
+
+[pull-task]
+dev
+test
+nc-lm-08-02-fnd3
+
+[vdt-frontend]
+dev
+test
+nc-lm-09-07-fnd1
+
+[pva-frontend]
+dev
+test
+nc-lm-09-07-fnd1
+
+[trackingface]
+dev
+test
+nc-lm-08-05-mq1
+
+[lm-test]
+test
+
+[lm-dev]
+dev
+
+[lm-pro]
+nc-lm-08-05-mq1
+nc-lm-09-07-fnd1
+nc-lm-08-02-fnd2
+nc-lm-08-02-fnd3
+nc-lm-08-05-stofnd1
+
+#[lm-pro:vars]
+#ansible_ssh_user=xuchang
+#ansible_ssh_private_key_file=/opt/ansible/keys/id_rsa

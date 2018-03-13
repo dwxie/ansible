@@ -1,0 +1,4 @@
+---
+# handlers file for tomcat
+- name: Restart service
+  service: name="tomcat-{{ tomcat_war_name }}" state=restarted

@@ -1,0 +1,5 @@
+---
+# handlers file for httpd
+- name: httpd graceful
+  sudo: yes
+  command: service httpd graceful

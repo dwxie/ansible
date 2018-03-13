@@ -1,0 +1,5 @@
+---
+# 主 playbook
+
+- include: ldsaas.yml
+- include: hcm.yml

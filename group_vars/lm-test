@@ -1,0 +1,5 @@
+---
+jar_user: test
+jar_base_home: /opt/zhyy
+jar_src: /usr/share/tomcat/.jenkins/workspace/lingmou/{{ jar_name }}.zip
+jar_init_script: init.jar.j2

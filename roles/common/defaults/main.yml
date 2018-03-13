@@ -1,0 +1,11 @@
+---
+# defaults file for common
+selinux_policy: targeted
+selinux_state: disabled
+
+idle_tmout: 300
+history_format: '"%F %T "'
+
+root_password: ~
+root_authorized_key_pruge: no
+root_authorized_key: ~

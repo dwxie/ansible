@@ -1,0 +1,16 @@
+---
+# defaults file for tomcat
+tomcat_war_src: ~
+tomcat_war_name: ~
+
+tomcat_src: apache-tomcat-7.0.79.tar.gz
+tomcat_remote_src: False
+tomcat_purge: False
+
+tomcat_user: tomcat
+tomcat_user_home: "/home/{{ tomcat_user }}"
+tomcat_base_dir: "{{ tomcat_user_home }}"
+tomcat_java_opts: "-server -Xms256m -Xmx1024m -XX:PermSize=256M -XX:MaxNewSize=256m -XX:MaxPermSize=512m"
+tomcat_init_script: init.j2
+tomcat_server_xml: server.xml.j2
+tomcat_http_port: 8080

@@ -1,0 +1,77 @@
+---
+- hosts: hcm
+  tags: hcm
+  roles:
+    - role: nginx
+      nginx_vhosts_filename: "ldsaas.conf"
+      nginx_log_format: |
+        '$remote_addr - $remote_user [$time_local] "$request" '
+        '$status $body_bytes_sent "$http_referer" '
+        '"$http_user_agent" "$http_x_forwarded_for" "$request_time"'
+      nginx_vhosts:
+        - listen: "80"
+          server_name: "localhost"
+          root: "/opt/ldsaas/build"
+          index: "index.php index.html index.htm"
+          error_page: "404 = /index.html"
+          extra_parameters: |
+            try_files	$uri /index.html;
+
+            charset	utf-8;
+
+            rewrite	^/api/druid/(.*)	/index.html;
+
+            location ^~ /api/ {
+                proxy_pass	http://tomcat_api;
+                proxy_redirect	default;
+                proxy_cookie_path	/api/ /;
+                proxy_set_header	Host	$host:$server_port;
+                proxy_set_header	X-Real-IP	$remote_addr;
+                proxy_set_header	X-Forwarded-Host	$host:$server_port;
+                proxy_set_header	X-Forwarded-Server	$host:$server_port;
+                proxy_set_header	X-Forwarded-For	$proxy_add_x_forwarded_for;
+            }
+
+            location ^~ /gateway/ {
+                proxy_pass	http://tomcat_gateway;
+                proxy_redirect	default;
+                proxy_cookie_path	/gateway/ /;
+                proxy_set_header	Host	$host:$server_port;
+                proxy_set_header	X-Real-IP	$remote_addr;
+                proxy_set_header	X-Forwarded-Host	$host:$server_port;
+                proxy_set_header	X-Forwarded-Server	$host:$server_port;
+                proxy_set_header	X-Forwarded-For	$proxy_add_x_forwarded_for;
+            }
+
+            location ^~ /socket.io/ {
+                proxy_pass	http://socket_io;
+                proxy_http_version	1.1;
+                proxy_set_header	Upgrade	$http_upgrade;
+                proxy_set_header	Connection	"upgrade";
+                proxy_set_header	X-real-ip	$remote_addr;
+                proxy_set_header	X-Forwarded-For	$remote_addr;
+            }
+
+            location ^~ /api/appshare/ {
+                alias  /opt/ldsaas/;
+            }
+  post_tasks:
+    - name: 创建部署目录
+      file:
+        path: /opt/ldsaas/build
+        mode: 0755
+        state: directory
+        owner: test
+        group: test
+    - name: 部署静态文件
+      unarchive:
+        dest: /opt/ldsaas/build
+        src: /usr/share/tomcat/.jenkins/workspace/HCM_pipeline/build.tar.gz
+        owner: test
+        group: test
+    - name: 部署分享页面
+      copy:
+        dest: /opt/ldsaas
+        src: yezhushare.png
+        owner: test
+        group: test

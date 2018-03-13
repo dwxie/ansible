@@ -1,0 +1,12 @@
+---
+# defaults file for ulimit
+ulimit_config_location: /etc/security/limits.conf
+ulimit_config:
+  - domain: '*'
+    type: '-'
+    item: nofile
+    value: 65536
+  - domain: '*'
+    type: '-'
+    item: nproc
+    value: 16384

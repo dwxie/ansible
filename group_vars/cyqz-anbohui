@@ -1,0 +1,15 @@
+---
+jar_user: test
+jar_base_home: '/opt/ldsaas'
+jar_src: /usr/share/tomcat/.jenkins/workspace/cyqz_java_pipeline/artifacts/{{ jar_name }}.tar.gz
+
+tomcat_user: test
+tomcat_base_dir: /opt/ldsaas
+tomcat_war_src: /usr/share/tomcat/.jenkins/workspace/cyqz_java_pipeline/artifacts/{{ tomcat_war_name }}.war
+tomcat_purge: no
+
+nginx_upstreams:
+  - name: tomcat_api
+    servers: {
+      "192.168.100.5:8080",
+    }

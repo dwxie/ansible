@@ -1,0 +1,19 @@
+---
+#- name: set the root user
+#  user:
+#    name: root
+#    password: "*"
+#  when: root_password is not defined
+
+- name: set password for root user
+  user:
+    name: root
+    password: "{{ root_password | password_hash('sha512') }}"
+  when: root_password != None
+
+- name: set authorized keys for root user
+  authorized_key:
+    user: root
+    exclusive: "{{ root_authorized_key_pruge }}"
+    key: "{{ root_authorized_key }}"
+  when: root_authorized_key != None

@@ -1,0 +1,24 @@
+---
+
+# role: jar
+jar_user: test
+jar_base_home: '/opt/ldsaas'
+jar_src: /usr/share/tomcat/.jenkins/workspace/LD-SaaS-build/artifacts/{{ jar_name }}.tar.gz
+# role: tomcat
+tomcat_user: test
+tomcat_base_dir: /opt/ldsaas
+tomcat_war_src: /usr/share/tomcat/.jenkins/workspace/LD-SaaS-build/artifacts/{{ tomcat_war_name }}.war
+
+nginx_upstreams:
+  - name: tomcat_api
+    servers: {
+      "192.168.100.24:8080",
+      }
+  - name: tomcat_gateway
+    servers: {
+      "192.168.100.24:8081",
+      }
+  - name: socket_io
+    servers: {
+      "192.168.100.24:9093",
+      }

@@ -1,0 +1,128 @@
+---
+# tasks file for tomcat
+
+- name: 确认参数
+  fail:
+    msg: "你必须定义$tomcat_war_src和$tomcat_war_name参数"
+  when: tomcat_war_src == None or tomcat_war_name == None
+
+- name: 清理tomcat重新部署
+  file:
+    path: "{{ tomcat_base_dir }}/tomcat-{{ tomcat_war_name }}"
+    state: absent
+  when: tomcat_purge
+
+- name: 创建用户{{ tomcat_user }}
+  user:
+    name: "{{ tomcat_user }}"
+    home: "{{ tomcat_user_home }}"
+  become: true
+
+- name: 创建安装目录和日志目录
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_user }}"
+    recurse: yes
+  become: true
+  with_items:
+    - "{{ tomcat_base_dir }}"
+    - "/var/log/tomcat-{{ tomcat_war_name }}"
+
+- name: 部署tomcat:step 1
+  unarchive:
+    dest: /tmp
+    src: "{{ tomcat_src }}"
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_user }}"
+    list_files: yes
+  register: output
+  become: true
+
+- name: 部署tomcat:step 2
+  command: cp -rf /tmp/{{ output.files[0] | topdir }} {{ tomcat_base_dir }}/tomcat-{{ tomcat_war_name }}
+  args:
+    creates: "{{ tomcat_base_dir }}/tomcat-{{ tomcat_war_name }}"
+  become: true
+  become_user: "{{ tomcat_user }}"
+
+- name: 清理默认工程
+  file:
+    path: "{{ tomcat_base_dir }}/tomcat-{{ tomcat_war_name }}/{{ item }}"
+    state: absent
+  with_items:
+    - webapps/ROOT
+    - webapps/docs
+    - webapps/examples
+    - webapps/host-manager
+    - webapps/manager
+    - webapps/{{ tomcat_war_name }}
+    - logs
+  become_user: "{{ tomcat_user }}"
+
+- name: 链接日志目录
+  file:
+    dest: "{{ tomcat_base_dir }}/tomcat-{{ tomcat_war_name }}/logs"
+    src: /var/log/tomcat-{{ tomcat_war_name }}
+    state: link
+    force: yes
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_user }}"
+
+- name: 配置tomcat
+  template:
+    dest: "{{ tomcat_base_dir }}/tomcat-{{ tomcat_war_name }}/conf/server.xml"
+    src: "{{ tomcat_server_xml }}"
+    mode: 0644
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_user }}"
+  notify:
+    - Restart service
+
+- name: 配置启动参数
+  template:
+    dest: "{{ tomcat_base_dir }}/tomcat-{{ tomcat_war_name }}/bin/setenv.sh"
+    src: "setenv.sh.j2"
+    mode: 0755
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_user }}"
+  notify:
+    - Restart service
+
+- name: 部署启动脚本
+  template:
+    dest: /etc/init.d/tomcat-{{ tomcat_war_name }}
+    src: "{{ tomcat_init_script }}"
+    mode: 0755
+    owner: root
+    group: root
+  become: true
+  notify:
+    - Restart service
+
+- name: 创建工程目录
+  file:
+    path: "{{ tomcat_base_dir }}/tomcat-{{ tomcat_war_name }}/webapps/{{ tomcat_war_name }}"
+    state: directory
+    mode: 0755
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_user }}"
+
+- name: 部署{{ tomcat_war_name }}工程
+  unarchive:
+    dest: "{{ tomcat_base_dir }}/tomcat-{{ tomcat_war_name }}/webapps/{{ tomcat_war_name }}"
+    src: "{{ tomcat_war_src }}"
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_user }}"
+  notify:
+    - Restart service
+  become_user: "{{ tomcat_user }}"
+
+- name: 启动服务和自启动
+  service:
+    name: "tomcat-{{ tomcat_war_name }}"
+    state: started
+    enabled: yes
+  become: true

@@ -1,0 +1,41 @@
+---
+- hosts: messagePushapi
+  roles:
+    - role: jar
+      jar_name: "messagePushapi"
+      jar_main_class: "com.lingdanet.saas.message.jpush.container.WebSocketContainer"
+  tags: messagePushapi
+
+- hosts: messageSms
+  roles:
+    - role: jar
+      jar_name: "messageSms"
+      jar_main_class: "com.lingdanet.saas.sms.container.SmsContainer"
+  tags: messageSms
+
+- hosts: cms
+  roles:
+    - role: jar
+      jar_name: "cms"
+      jar_main_class: "com.lingdanet.saas.deamon.cms.container.CmsMessageContainer"
+  tags: cms
+
+- hosts: eventScan
+  roles:
+    - role: jar
+      jar_name: "eventScan"
+      jar_main_class: "com.lingdanet.saas.deamo.container.EventScanContainer"
+  tags: eventScan
+
+- hosts: api
+  roles:
+    - role: tomcat
+      tomcat_war_name: api
+  tags: api
+
+- hosts: scheduler
+  roles:
+    - role: tomcat
+      tomcat_war_name: scheduler
+      tomcat_http_port: 8082
+  tags: scheduler

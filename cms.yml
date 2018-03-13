@@ -1,0 +1,7 @@
+---
+- hosts: cms
+  roles:
+    - role: jar
+      jar_name: "cms"
+      jar_main_class: "com.lingdanet.saas.deamon.cms.container.CmsMessageContainer"
+  tags: cms

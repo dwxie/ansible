@@ -1,0 +1,17 @@
+---
+jar_user: test
+jar_base_home: /opt/zhyy
+jar_src: /usr/share/tomcat/.jenkins/workspace/lingmou/{{ jar_name }}.zip
+jar_init_script: init.jar.j2
+jar_purge_dir: True
+
+#tomcat_user: test
+#tomcat_base_dir: /opt/ldsaas
+#tomcat_war_src: /usr/share/tomcat/.jenkins/workspace/cyqz_java_pipeline/artifacts/{{ tomcat_war_name }}.war
+#tomcat_purge: no
+#
+#nginx_upstreams:
+#  - name: tomcat_api
+#    servers: {
+#      "192.168.100.10:8080",
+#    }

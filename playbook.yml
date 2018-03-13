@@ -1,0 +1,59 @@
+---
+- hosts: agent01
+#  gather_facts: false
+  vars:
+    jar_user: jar
+#    root_authorized_key: |
+#      ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDSkwttbxpS0a7sBGddnlAMggTe50i5kOiLYLpvzenDDCic3MUeLT88d6fDFhrABU7OJANOc1G9P32bc6UWNzjyUluE/JD3vuNuSTZAsVZJwlMY7pX+3r5eTKSaf6Qdx1ektDlzTpQ4QM5ctmwzD93TGmc1w7gDBsLAm0QrJNv0HQDT5phrUm4fkFZQFT4eo0uWS6ReNOu4Y0yG+edpAJCvAx4s1uzhZi66zyWgNaGGMqnPd/sFzvCeN/7AC+1lCs1ie4Oatn7ZFkvzDLOSmM5SYV4VCxWAGWb1x5jsJZi5q1wi5GnhyfyFOR/jwtPm5/V029seOR6j3RO/5Tf19aS1 vagrant
+  roles:
+#    - common
+    - role: nginx
+      nginx_vhosts_filename: "ldsaas.conf"
+      nginx_vhosts:
+        - listen: "80"
+          server_name: "localhost"
+          root: "/opt/ldsaas/build"
+          index: "index.php index.html index.htm"
+          error_page: "404 = index.html"
+          extra_parameters: |
+            charset utf-8;
+            location ^~ /api/ {
+                proxy_pass	http://192.168.100.21:8080/api/;
+                proxy_redirect	default;
+                proxy_cookie_path	/api/ /;
+                proxy_set_header	Host	$host:$server_port;
+                proxy_set_header	X-Real-IP	$remote_addr;
+                proxy_set_header	X-Forwarded-Host	$host:$server_port;
+                proxy_set_header	X-Forwarded-Server	$host:$server_port;
+                proxy_set_header	X-Forwarded-For	$proxy_add_x_forwarded_for;
+            }
+
+            location ^~ /gateway/ {
+                proxy_pass	http://192.168.100.21:8081/gateway/;
+                proxy_redirect	default;
+                proxy_cookie_path	/gateway/ /;
+                proxy_set_header	Host	$host:$server_port;
+                proxy_set_header	X-Real-IP	$remote_addr;
+                proxy_set_header	X-Forwarded-Host	$host:$server_port;
+                proxy_set_header	X-Forwarded-Server	$host:$server_port;
+                proxy_set_header	X-Forwarded-For	$proxy_add_x_forwarded_for;
+            	}
+
+            location ^~ /socket.io/ {
+                proxy_pass	http://192.168.100.21:9093;
+                proxy_http_version	1.1;
+                proxy_set_header	Upgrade	$http_upgrade;
+                proxy_set_header	Connection	"upgrade";
+                proxy_set_header	X-real-ip	$remote_addr;
+                proxy_set_header	X-Forwarded-For	$remote_addr;
+            }
+#    - role: tomcat
+#      tomcat_war_src: /root/api.war
+#      tomcat_war_name: api
+  post_tasks:
+    - name: 部署静态文件
+      unarchive:
+        dest: /var/www
+        src: /root/build.tar.gz
+        owner: root
+        group: root

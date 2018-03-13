@@ -1,0 +1,68 @@
+#!/bin/bash
+# chkconfig:   - 35 35
+
+USER_RUN={{ jar_user }}
+PRO_NAME={{ jar_name }}
+MAIN_CLASS={{ jar_main_class }}
+HOME_DIR={{ jar_project_home }}
+NOHUP_LOG={{ jar_project_home }}/logs/stdout.log
+pidfile="/tmp/$MAIN_CLASS.pid"
+
+pid=`ps -ef|grep $MAIN_CLASS|grep -v grep|awk '{print $2}'`
+Pn=`ps -ef|grep $MAIN_CLASS|grep -v grep|wc -l`
+start() {
+    /bin/su -p $USER_RUN -c "cd $HOME_DIR;nohup ./gotrackingface > nohup.log 2>&1 &"
+    echo $MAIN_CLASS is start
+    pid=`ps -ef|grep $MAIN_CLASS|grep -v grep|awk '{print $2}'`
+    echo $pid >$pidfile
+}
+stop() {
+    ps -ef|grep $MAIN_CLASS|grep -v grep|awk '{print $2}'|xargs kill -9
+    rm -f $pidfile
+    echo $MAIN_CLASS is stopped
+}
+
+case "$1" in
+  start)
+    if [ -f $pidfile -a $Pn -ge 1 ];then
+       echo $MAIN_CLASS is running
+    elif [ $Pn -ge 1 ];then
+       echo $MAIN_CLASS is running
+    else
+       start
+       echo $pid >$pidfile
+    fi
+    ;;
+  stop)
+    if [ -f $pidfile -a $Pn -ge 1 ];then
+       stop
+    elif [ $Pn -ge 1 ];then
+       stop
+    else
+       echo $MAIN_CLASS is not running
+    fi
+    ;;
+  restart)
+    if [ -f $pidfile -a $Pn -ge 1 ];then
+       stop
+       start
+    elif [ $Pn -ge 1 ];then
+       stop
+       start
+    else
+       start
+    fi
+    ;;
+  status)
+    if [ -f $pidfile -a $Pn -ge 1 ];then
+       echo $MAIN_CLASS is running（$pid）...
+    elif [ $Pn -ge 1 ];then
+       echo $MAIN_CLASS is running（$pid）...
+    else
+       echo $MAIN_CLASS is stopped
+    fi
+    ;;
+  *)
+       echo $"Usage: $0 {start|stop|restart|status}"
+
+esac
