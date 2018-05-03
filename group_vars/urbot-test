@@ -1,9 +1,9 @@
 ---
 jar_user: test
-jar_base_home: /opt/lingmou
-jar_src: /usr/share/tomcat/.jenkins/workspace/lingmou2.0/{{ jar_name }}.zip
-jar_init_script: init.jar.j3
-#jar_java_opts: "-server -Xms1g -Xmx1g -XX:PermSize=128M -XX:MaxNewSize=128m -XX:MaxPermSize=256m"
+jar_base_home: /opt/urbot
+jar_src: /usr/share/tomcat/.jenkins/workspace/urbot/{{ jar_name }}.zip
+jar_init_script: init.jar.j4
+#jar_java_opts: "-server -Xms512m -Xmx512m -XX:PermSize=128M -XX:MaxNewSize=128m -XX:MaxPermSize=128m"
 jar_purge_dir: True
 
 #tomcat_user: test

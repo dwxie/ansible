@@ -1,51 +1,93 @@
-dev  ansible_ssh_host=192.168.100.31         ansible_ssh_user=root   ansible_ssh_pass=lingdasa
-test ansible_ssh_host=lm-test02.lingda.com   ansible_ssh_user=root   ansible_ssh_pass=lingdasa
-nc-lm-09-07-fnd1    ansible_ssh_host=218.95.36.58
+dev  ansible_ssh_host=lm-dev.lingda.com     ansible_ssh_user=root   ansible_ssh_pass=lingdasa
+test ansible_ssh_host=lm-test01.lingda.com  ansible_ssh_user=root   ansible_ssh_pass=lingdasa
 nc-lm-08-02-fnd2    ansible_ssh_host=218.95.36.57
 nc-lm-08-02-fnd3    ansible_ssh_host=218.95.36.56
-nc-lm-08-05-stofnd1 ansible_ssh_host=117.21.249.3
-nc-lm-08-05-mq1     ansible_ssh_host=117.21.249.6
-
+nc-lm-08-04-vid1    ansible_ssh_host=117.21.249.10  ansible_ssh_port=10022
 
 [apiServer]
 dev
-est
-nc-lm-08-05-stofnd1
+test
+nc-lm-08-02-fnd3
 
 [bigdataServer]
 dev
 test
-nc-lm-09-07-fnd1
+nc-lm-08-02-fnd3
 
 [deviceServer]
 dev
 test
+nc-lm-08-02-fnd3
 
 [logServer]
 dev
 test
-nc-lm-09-07-fnd1
+nc-lm-08-02-fnd3
 
 [messageServer]
 dev
 test
-nc-lm-09-07-fnd2
+nc-lm-08-02-fnd3
 
 [userServer]
 dev
 test
-nc-lm-09-07-fnd3
+nc-lm-08-02-fnd3
+
+[schedulerJobServer]
+dev
+test
+nc-lm-08-02-fnd3
+
+[capture-server]
+dev
+test
+nc-lm-08-02-fnd2
+
+[capture-server-stack]
+dev
+test
+nc-lm-08-02-fnd2
+
+[alarmServer]
+dev
+test
+nc-lm-08-02-fnd3
+
+[VID]
+dev
+test
+nc-lm-08-04-vid1
+
+[StructureEngine]
+dev
+test
+nc-lm-08-02-fnd2
+
+[statistics-server]
+dev
+test
+nc-lm-08-02-fnd3
 
 [lm2.0-dev]
 dev
 
-#[lm-pro]
-#nc-lm-08-05-mq1
-#nc-lm-09-07-fnd1
-#nc-lm-09-07-fnd2
-#nc-lm-09-07-fnd3
-#nc-lm-08-05-stofnd1
-#
-#[lm-pro:vars]
-##ansible_ssh_user=xuchang
-##ansible_ssh_private_key_file=/opt/ansible/keys/id_rsa
+[lm2.0-test]
+test
+
+[lm2.0-pro]
+pro
+
+[frontend]
+dev
+test
+nc-lm-08-02-fnd2
+
+[lm2.0-pro]
+nc-lm-08-02-fnd2
+nc-lm-08-02-fnd3
+nc-lm-08-04-vid1
+
+[lm2.0-pro:vars]
+#ansible_ssh_user=xuchang
+#ansible_ssh_private_key_file=/opt/ansible/keys/id_rsa

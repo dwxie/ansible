@@ -1,12 +1,12 @@
-dev01 ansible_ssh_host=192.168.100.16 ansible_ssh_user=root ansible_ssh_pass=wuh123
 test-load-01 ansible_ssh_host=192.168.100.4 ansible_ssh_user=root ansible_ssh_pass=lingdasa
 test-load-02 ansible_ssh_host=192.168.100.17 ansible_ssh_user=root ansible_ssh_pass=lingdasa
 test-load-03 ansible_ssh_host=192.168.100.18 ansible_ssh_user=root ansible_ssh_pass=lingdasa
+test-clue ansible_ssh_host=lm-test-clue.lingda.com ansible_ssh_user=root ansible_ssh_pass=lingdasa
 demo01 ansible_ssh_host=192.168.100.10 ansible_ssh_user=root ansible_ssh_pass=lingdasa
 pro01 ansible_ssh_host=192.168.2.209 ansible_ssh_user=xuchang ansible_ssh_port=10022 ansible_ssh_private_key_file=~/.ssh/id_rsa
 pro02 ansible_ssh_host=192.168.2.210 ansible_ssh_user=xuchang ansible_ssh_port=10022 ansible_ssh_private_key_file=~/.ssh/id_rsa
 pro03 ansible_ssh_host=192.168.2.211 ansible_ssh_user=xuchang ansible_ssh_port=10022 ansible_ssh_private_key_file=~/.ssh/id_rsa
-anbohui ansible_ssh_host=192.168.100.5  ansible_ssh_user=root ansible_ssh_pass=lingdasa
+dev01 ansible_ssh_host=cyqz-dev.lingda.com  ansible_ssh_user=root ansible_ssh_pass=lingdasa
 
 [messagePushapi]
 test-load-01
@@ -16,7 +16,8 @@ demo01
 pro01
 pro02
 pro03
-anbohui
+dev01
+test-clue
 
 [messageSms]
 test-load-01
@@ -26,7 +27,8 @@ demo01
 pro01
 pro02
 pro03
-anbohui
+dev01
+test-clue
 
 [cms]
 test-load-01
@@ -36,7 +38,8 @@ demo01
 pro01
 pro02
 pro03
-anbohui
+dev01
+test-clue
 
 [eventScan]
 test-load-01
@@ -46,7 +49,14 @@ demo01
 pro01
 pro02
 pro03
-anbohui
+dev01
+test-clue
+
+[messageServer]
+test-load-01
+test-load-02
+test-load-03
+dev01
 
 [api]
 test-load-01
@@ -56,7 +66,8 @@ demo01
 pro01
 pro02
 pro03
-anbohui
+dev01
+test-clue
 
 [scheduler]
 test-load-01
@@ -66,7 +77,8 @@ demo01
 pro01
 pro02
 pro03
-anbohui
+dev01
+test-clue
 
 [web]
 dev01
@@ -77,9 +89,13 @@ demo01
 pro01
 pro02
 pro03
+test-clue
 
 [cyqz-dev]
 dev01
+
+[cyqz-test]
+test-clue
 
 [cyqz-test-load]
 test-load-01
@@ -93,6 +109,3 @@ demo01
 pro01
 pro02
 pro03
-
-[cyqz-anbohui]
-anbohui

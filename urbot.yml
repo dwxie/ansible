@@ -1,0 +1,90 @@
+---
+- hosts: api-server
+  roles:
+    - role: jar
+      jar_name: "api-server"
+      jar_main_class: "urbot-api-server-0.0.1-SNAPSHOT.jar"
+  tags: api-server
+
+- hosts: cmd-server
+  roles:
+    - role: jar
+      jar_name: "cmd-server"
+      jar_main_class: "urbot-cmd-server-0.0.1-SNAPSHOT.jar"
+  tags: cmd-server
+
+- hosts: device-server
+  roles:
+    - role: jar
+      jar_name: "device-server"
+      jar_main_class: "urbot-device-server-0.0.1-SNAPSHOT.jar"
+  tags: device-server
+
+- hosts: log-server
+  roles:
+    - role: jar
+      jar_name: "log-server"
+      jar_main_class: "urbot-log-server-0.0.1-SNAPSHOT.jar"
+  tags: log-server
+
+- hosts: message-server
+  roles:
+    - role: jar
+      jar_name: "message-server"
+      jar_main_class: "urbot-message-server-0.0.1-SNAPSHOT.jar"
+  tags: message-server
+
+- hosts: robotmsg-server
+  roles:
+    - role: jar
+      jar_name: "robotmsg-server"
+      jar_main_class: "urbot-robotmsgserver-0.0.1-SNAPSHOT.jar"
+  tags: robotmsg-server
+
+- hosts: robot-server
+  roles:
+    - role: jar
+      jar_name: "robot-server"
+      jar_main_class: "urbot-robot-server-0.0.1-SNAPSHOT.jar"
+  tags: robot-server
+
+- hosts: scheduler-job
+  roles:
+    - role: jar
+      jar_name: "scheduler-job"
+      jar_main_class: "urbot-scheduler-job-0.0.1-SNAPSHOT.jar"
+  tags: scheduler-job
+
+
+- hosts: user-server
+  roles:
+    - role: jar
+      jar_name: "user-server"
+      jar_main_class: "urbot-user-server-0.0.1-SNAPSHOT.jar"
+  tags: user-server
+
+- hosts: webapi-server
+  roles:
+    - role: jar
+      jar_name: "webapi-server"
+      jar_main_class: "urbot-webapi-server-0.0.1-SNAPSHOT.jar"
+  tags: webapi-server
+
+- hosts: frontend
+  tasks:
+    - name: 创建BS端部署目录
+      file:
+        path: /opt/urbot/frontend
+        mode: 0755
+        state: directory
+        owner: "{{ jar_user }}"
+        group: "{{ jar_user }}"
+    - name: 部署BS端静态文件
+      unarchive:
+        dest: /opt/urbot/frontend
+        src: /usr/share/tomcat/.jenkins/workspace/urbot-frontend/dist.tar.gz
+        mode: 0755
+        owner: "{{ jar_user }}"
+        group: "{{ jar_user }}"
+  tags: urbot-frontend
+

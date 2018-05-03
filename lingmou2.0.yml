@@ -40,3 +40,78 @@
       jar_name: "userServer"
       jar_main_class: "lingmou-user-server-0.0.1-SNAPSHOT.jar"
   tags: userServer
+
+- hosts: alarmServer
+  roles:
+    - role: jar
+      jar_name: "alarmServer"
+      jar_main_class: "lingmou-alarm-server-0.0.1-SNAPSHOT.jar"
+  tags: alarmServer
+
+- hosts: schedulerJobServer
+  roles:
+    - role: jar
+      jar_name: "schedulerJobServer"
+      jar_main_class: "lingmou-scheduler-job-0.0.1-SNAPSHOT.jar"
+  tags: schedulerJobServer
+
+
+- hosts: capture-server
+  roles:
+    - role: jar
+      jar_name: "capture-server"
+      jar_main_class: "capture-server-0.0.1-SNAPSHOT.jar"
+  tags: capture-server
+
+- hosts: capture-server-stack
+  roles:
+    - role: jar
+      jar_name: "capture-server-stack"
+      jar_main_class: "capture-server-stack-0.0.1-SNAPSHOT.jar"
+  tags: capture-server-stack
+
+- hosts: statistics-server
+  roles:
+    - role: jar
+      jar_name: "statistics-server"
+      jar_main_class: "statistics-server-0.0.1-SNAPSHOT.jar"
+  tags: statistics-server
+
+- hosts: VID
+  roles:
+    - role: jar
+      jar_main_class: "VID"
+      jar_name: "VID"
+      jar_init_script: init.j3
+      jar_src: /usr/share/tomcat/.jenkins/workspace/VID/VID.zip
+      jar_base_home: /opt/lingmou
+  tags: VID
+
+- hosts: StructureEngine
+  roles:
+    - role: jar
+      jar_main_class: "StructureEngine"
+      jar_name: "StructureEngine"
+      jar_init_script: init.j3
+      jar_src: /usr/share/tomcat/.jenkins/workspace/StructureEngine/StructureEngine.zip
+      jar_base_home: /opt/lingmou
+  tags: StructureEngine
+
+- hosts: frontend
+  tasks:
+    - name: 创建BS端部署目录
+      file:
+        path: /opt/lingmou/frontend
+        mode: 0755
+        state: directory
+        owner: "{{ jar_user }}"
+        group: "{{ jar_user }}"
+    - name: 部署BS端静态文件
+      unarchive:
+        dest: /opt/lingmou/frontend
+        src: /usr/share/tomcat/.jenkins/workspace/frontend/dist.tar.gz
+        mode: 0755
+        owner: "{{ jar_user }}"
+        group: "{{ jar_user }}"
+  tags: lingmou2.0-frontend
+

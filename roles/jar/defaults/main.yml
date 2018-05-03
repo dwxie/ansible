@@ -11,5 +11,5 @@ jar_user: "{{ jar_name }}"
 jar_user_home: /home/{{ jar_user }}
 jar_base_home: "{{ jar_user_home }}"
 jar_project_home: "{{ jar_base_home }}/{{ jar_name }}"
-jar_java_opts: "-server -Xms256m -Xmx1024m -XX:PermSize=256M -XX:MaxNewSize=256m -XX:MaxPermSize=512m"
+jar_java_opts: "-server -Xms256m -Xmx512m -XX:PermSize=128M -XX:MaxNewSize=128m -XX:MaxPermSize=256m"
 jar_init_script: init.j2

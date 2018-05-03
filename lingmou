@@ -6,6 +6,8 @@ nc-lm-08-02-fnd3    ansible_ssh_host=218.95.36.56
 nc-lm-08-05-stofnd1 ansible_ssh_host=117.21.249.3
 nc-lm-08-05-mq1     ansible_ssh_host=117.21.249.6
 
+fc-fc3  ansible_ssh_host=221.176.171.36 ansible_ssh_port=10022
+
 
 [accessHK]
 dev
@@ -16,6 +18,7 @@ nc-lm-08-05-stofnd1
 dev
 test
 nc-lm-09-07-fnd1
+fc-fc3
 
 [iod]
 dev
@@ -25,36 +28,43 @@ test
 dev
 test
 nc-lm-08-02-fnd2
+fc-fc3
 
 [vdt]
 dev
 test
 nc-lm-09-07-fnd1
+fc-fc3
 
 [vdt-access]
 dev
 test
 nc-lm-08-02-fnd2
+fc-fc3
 
 [pull-task]
 dev
 test
 nc-lm-08-02-fnd3
+fc-fc3
 
 [vdt-frontend]
 dev
 test
 nc-lm-09-07-fnd1
+fc-fc3
 
 [pva-frontend]
 dev
 test
 nc-lm-09-07-fnd1
+fc-fc3
 
 [trackingface]
 dev
 test
 nc-lm-08-05-mq1
+fc-fc3
 
 [lm-test]
 test
@@ -69,6 +79,13 @@ nc-lm-08-02-fnd2
 nc-lm-08-02-fnd3
 nc-lm-08-05-stofnd1
 
-#[lm-pro:vars]
+[lm-fangcheng]
+fc-fc3
+
+[lm-pro:vars]
+#ansible_ssh_user=xuchang
+#ansible_ssh_private_key_file=/opt/ansible/keys/id_rsa
+
+[lm-fangcheng:vars]
 #ansible_ssh_user=xuchang
 #ansible_ssh_private_key_file=/opt/ansible/keys/id_rsa

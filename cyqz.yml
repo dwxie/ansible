@@ -39,3 +39,13 @@
       tomcat_war_name: scheduler
       tomcat_http_port: 8082
   tags: scheduler
+
+- hosts: messageServer
+  vars:
+    jar_init_script: init_waittcpclose.j2
+  roles:
+    - role: jar
+      jar_name: "messageServer"
+      jar_main_class: "com.lingdanet.saas.netty.websocket.container.WebSocketContainer"
+      jar_src: /usr/share/tomcat/.jenkins/workspace/message/artifacts/messageServer.tar.gz
+  tags: messageServer

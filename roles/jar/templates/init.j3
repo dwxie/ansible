@@ -8,10 +8,10 @@ HOME_DIR={{ jar_project_home }}
 NOHUP_LOG={{ jar_project_home }}/logs/stdout.log
 pidfile="/tmp/$MAIN_CLASS.pid"
 
-pid=`ps -ef|grep $MAIN_CLASS|grep -v grep|awk '{print $2}'`
-Pn=`ps -ef|grep $MAIN_CLASS|grep -v grep|wc -l`
+pid=`pidof $MAIN_CLASS`
+Pn=`pidof $MAIN_CLASS|wc -l`
 start() {
-    /bin/su -p $USER_RUN -c "cd $HOME_DIR;nohup ./gotrackingface > nohup.log 2>&1 &"
+    /bin/su -p $USER_RUN -c "cd $HOME_DIR;nohup ./$MAIN_CLASS > nohup.log 2>&1 &"
     echo $MAIN_CLASS is start
     pid=`ps -ef|grep $MAIN_CLASS|grep -v grep|awk '{print $2}'`
     echo $pid >$pidfile
