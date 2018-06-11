@@ -27,6 +27,21 @@
       jar_main_class: "lingmou-log-server-0.0.1-SNAPSHOT.jar"
   tags: logServer
 
+- hosts: mqHandlerServer
+  roles:
+    - role: jar
+      jar_name: "mqHandlerServer"
+      jar_main_class: "lingmou-mqhandler-service-0.0.1-SNAPSHOT.jar"
+  tags: mqHandlerServer
+
+- hosts: cyqzServer
+  roles:
+    - role: jar
+      jar_name: "cyqzServer"
+      jar_main_class: "lingmou-cyqz-server-0.0.1-SNAPSHOT.jar"
+  tags: cyqzServer
+
+
 - hosts: messageServer
   roles:
     - role: jar
@@ -40,6 +55,27 @@
       jar_name: "userServer"
       jar_main_class: "lingmou-user-server-0.0.1-SNAPSHOT.jar"
   tags: userServer
+
+- hosts: communityServer
+  roles:
+    - role: jar
+      jar_name: "communityServer"
+      jar_main_class: "lingmou-community-service-0.0.1-SNAPSHOT.jar"
+  tags: communityServer
+
+- hosts: socialSecurityAccessServer
+  roles:
+    - role: jar
+      jar_name: "socialSecurityAccessServer"
+      jar_main_class: "lingmou-socialsecurityaccess-server-0.0.1-SNAPSHOT.jar"
+  tags: socialSecurityAccessServer
+
+- hosts: skynetAccessServer
+  roles:
+    - role: jar
+      jar_name: "skynetAccessServer"
+      jar_main_class: "lingmou-skynetaccess-server-0.0.1-SNAPSHOT.jar"
+  tags: skynetAccessServer
 
 - hosts: alarmServer
   roles:
@@ -55,10 +91,26 @@
       jar_main_class: "lingmou-scheduler-job-0.0.1-SNAPSHOT.jar"
   tags: schedulerJobServer
 
+- hosts: statisticSchedule
+  roles:
+    - role: jar
+      jar_name: "statisticSchedule"
+      jar_main_class: "statisticSchedule.jar"
+  tags: statisticSchedule
+
+- hosts: statisticAnalysis
+  roles:
+    - role: jar
+      jar_user: hdfs
+      jar_name: "statisticAnalysis"
+      jar_main_class: "statisticAnalysis-jar-with-dependencies.jar"
+      jar_init_script: init.j5
+  tags: statisticAnalysis
 
 - hosts: capture-server
   roles:
     - role: jar
+      jar_user: root
       jar_name: "capture-server"
       jar_main_class: "capture-server-0.0.1-SNAPSHOT.jar"
   tags: capture-server
@@ -114,4 +166,3 @@
         owner: "{{ jar_user }}"
         group: "{{ jar_user }}"
   tags: lingmou2.0-frontend
-

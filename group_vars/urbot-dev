@@ -1,0 +1,18 @@
+---
+jar_user: test
+jar_base_home: /opt/urbot
+jar_src: /usr/share/tomcat/.jenkins/workspace/urbot/{{ jar_name }}.zip
+jar_init_script: init.jar.j4
+#jar_java_opts: "-server -Xms512m -Xmx512m -XX:PermSize=128M -XX:MaxNewSize=128m -XX:MaxPermSize=128m"
+jar_purge_dir: True
+
+#tomcat_user: test
+#tomcat_base_dir: /opt/ldsaas
+#tomcat_war_src: /usr/share/tomcat/.jenkins/workspace/cyqz_java_pipeline/artifacts/{{ tomcat_war_name }}.war
+#tomcat_purge: no
+#
+#nginx_upstreams:
+#  - name: tomcat_api
+#    servers: {
+#      "192.168.100.10:8080",
+#    }

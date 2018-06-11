@@ -64,7 +64,7 @@ fc-fc3
 dev
 test
 nc-lm-08-05-mq1
-fc-fc3
+#fc-fc3
 
 [lm-test]
 test
@@ -74,18 +74,18 @@ dev
 
 [lm-pro]
 nc-lm-08-05-mq1
-nc-lm-09-07-fnd1
-nc-lm-08-02-fnd2
-nc-lm-08-02-fnd3
-nc-lm-08-05-stofnd1
+#nc-lm-09-07-fnd1
+#nc-lm-08-02-fnd2
+#nc-lm-08-02-fnd3
+#nc-lm-08-05-stofnd1
 
 [lm-fangcheng]
 fc-fc3
 
 [lm-pro:vars]
-#ansible_ssh_user=xuchang
-#ansible_ssh_private_key_file=/opt/ansible/keys/id_rsa
+ansible_ssh_user=xuchang
+ansible_ssh_private_key_file=/opt/ansible/keys/id_rsa
 
 [lm-fangcheng:vars]
-#ansible_ssh_user=xuchang
-#ansible_ssh_private_key_file=/opt/ansible/keys/id_rsa
+ansible_ssh_user=xuchang
+ansible_ssh_private_key_file=/opt/ansible/keys/id_rsa

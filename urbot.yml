@@ -16,8 +16,8 @@
 - hosts: device-server
   roles:
     - role: jar
-      jar_name: "device-server"
-      jar_main_class: "urbot-device-server-0.0.1-SNAPSHOT.jar"
+      jar_name: "deviceServer"
+      jar_main_class: "lingmou-device-server-0.0.1-SNAPSHOT.jar"
   tags: device-server
 
 - hosts: log-server
@@ -38,7 +38,7 @@
   roles:
     - role: jar
       jar_name: "robotmsg-server"
-      jar_main_class: "urbot-robotmsgserver-0.0.1-SNAPSHOT.jar"
+      jar_main_class: "urbot-robotmsg-server-0.0.1-SNAPSHOT.jar"
   tags: robotmsg-server
 
 - hosts: robot-server
@@ -59,8 +59,8 @@
 - hosts: user-server
   roles:
     - role: jar
-      jar_name: "user-server"
-      jar_main_class: "urbot-user-server-0.0.1-SNAPSHOT.jar"
+      jar_name: "userServer"
+      jar_main_class: "lingmou-user-server-0.0.1-SNAPSHOT.jar"
   tags: user-server
 
 - hosts: webapi-server
@@ -82,7 +82,7 @@
     - name: 部署BS端静态文件
       unarchive:
         dest: /opt/urbot/frontend
-        src: /usr/share/tomcat/.jenkins/workspace/urbot-frontend/dist.tar.gz
+        src: /usr/share/tomcat/.jenkins/workspace/urbot-frontend/build.tar.gz
         mode: 0755
         owner: "{{ jar_user }}"
         group: "{{ jar_user }}"

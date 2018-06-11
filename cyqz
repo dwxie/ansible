@@ -57,6 +57,7 @@ test-load-01
 test-load-02
 test-load-03
 dev01
+demo01
 
 [api]
 test-load-01

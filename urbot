@@ -1,37 +1,52 @@
 test  ansible_ssh_host=urbot-test.lingda.com        ansible_ssh_user=root   ansible_ssh_pass=lingdasa
+dev   ansible_ssh_host=192.168.100.166        ansible_ssh_user=root   ansible_ssh_pass=robot123456
 
 [api-server]
 test
+dev
 
 [cmd-server]
 test
+dev
 
 [device-server]
 test
+dev
 
 [log-server]
 test
+dev
 
 [message-server]
 test
+dev
 
 [robotmsg-server]
 test
+dev
 
 [robot-server]
 test
+dev
 
 [user-server]
 test
+dev
 
 [webapi-server]
 test
+dev
 
 [scheduler-job]
 test
+dev
 
 [urbot-test]
 test
 
+[urbot-dev]
+dev
+
 [frontend]
 test
+dev
