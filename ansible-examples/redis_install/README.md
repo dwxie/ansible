@@ -1,1 +1,0 @@
-本文介绍使用ansible的playbook功能在centos或者redhat 6系列系统里安装2.6.17版本redis master and slave.
